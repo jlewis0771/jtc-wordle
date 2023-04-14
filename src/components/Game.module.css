@@ -1,0 +1,16 @@
+.gameContent {
+  max-height: 700px;
+}
+
+.toast {
+  animation: fadein 200ms ease-in;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
