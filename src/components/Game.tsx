@@ -77,10 +77,12 @@ export const Game = ({ solution }: Props) => {
     setGuessesCallback([...guesses, currentGuess]);
     dispatch({ type: 'clear' });
     if (currentGuess === solution) {
-      setGameCompletion('won');
+      setTimeout(() => {
+        setGameCompletion('won');
+      }, 2000);
       setTimeout(() => {
         showToast('You won!!!');
-      }, 2500);
+      }, 4000);
       return;
     }
     if (guesses.length + 1 === GAME_ROUNDS) {
@@ -171,12 +173,7 @@ export const Game = ({ solution }: Props) => {
           {toastText}
         </div>
       )}
-      <div
-        className={classNames(
-          css.gameContent,
-          'w-full max-w-lg flex flex-col items-center justify-between py-8'
-        )}
-      >
+      <div className='w-full max-w-lg max-h-[700px] flex flex-col items-center justify-between py-8'>
         <div className='flex flex-col gap-2'>
           {Array.from({ length: GAME_ROUNDS }).map((_, idx) => {
             const isCurrentGuess = idx === guesses.length;
@@ -186,6 +183,9 @@ export const Game = ({ solution }: Props) => {
                 guess={isCurrentGuess ? currentGuess : guesses[idx]}
                 letterStates={guessIdxToTileStates[idx]}
                 shake={shakeCurrentRow && isCurrentGuess}
+                jump={
+                  gameCompletionState === 'won' && idx === guesses.length - 1
+                }
               />
             );
           })}

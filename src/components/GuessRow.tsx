@@ -8,9 +8,10 @@ type Props = {
   guess: string | undefined;
   letterStates: Array<LetterState>;
   shake: boolean;
+  jump: boolean;
 };
 
-export const GuessRow = ({ guess, letterStates, shake }: Props) => {
+export const GuessRow = ({ guess, letterStates, shake, jump }: Props) => {
   return (
     <div className={classNames('flex gap-2', { [css.shake]: shake })}>
       {Array.from({ length: GAME_WORD_LEN }).map((_, idx) => {
@@ -20,6 +21,7 @@ export const GuessRow = ({ guess, letterStates, shake }: Props) => {
             idx={idx}
             letter={guess ? guess[idx] : ''}
             state={letterStates[idx]}
+            jump={jump}
           />
         );
       })}
@@ -31,11 +33,12 @@ type TileProps = {
   letter: string | undefined;
   state: LetterState;
   idx: number;
+  jump: boolean;
 };
 
-export const Tile = ({ letter, state, idx }: TileProps) => {
+export const Tile = ({ letter, state, idx, jump }: TileProps) => {
   const [revealColor, setRevealColor] = useState(false);
-  const animationDelay = idx * 300;
+  const animationDelay = jump ? idx * 80 : idx * 300;
 
   useEffect(() => {
     let timeout: number;
@@ -61,6 +64,7 @@ export const Tile = ({ letter, state, idx }: TileProps) => {
           [css.wrong]: state === 'wrong' && revealColor,
           [css.wrongPlace]: state === 'wrong-place' && revealColor,
           [css.flip]: state !== 'default',
+          [css.jump]: jump,
         }
       )}
     >
